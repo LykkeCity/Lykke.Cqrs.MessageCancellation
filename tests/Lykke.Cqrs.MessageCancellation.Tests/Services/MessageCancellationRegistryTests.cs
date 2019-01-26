@@ -1,0 +1,39 @@
+using System;
+using Lykke.Cqrs.MessageCancellation.Services;
+using Lykke.Cqrs.MessageCancellation.Tests.Utils;
+using Xunit;
+
+namespace Lykke.Cqrs.MessageCancellation.Tests.Services
+{
+    public class MessageCancellationRegistryTests
+    {
+        [Fact]
+        public void GetMessageId__MessageTypeIsRegistered__IdReceived()
+        {
+            var objectWithMessageId = new MessageWithSomeGuidId()
+            {
+                MessageId = Guid.NewGuid()
+            };
+            var messageCancellationRegistry = new MessageCancellationRegistry();
+            //Example of a message registration
+            messageCancellationRegistry.RegistryTypeWithMessageId<MessageWithSomeGuidId>((x) => x.MessageId);
+            var messageId = messageCancellationRegistry.GetMessageId(objectWithMessageId);
+            
+            Assert.Equal(objectWithMessageId.MessageId, messageId);
+        }
+
+        [Fact]
+        public void GetMessageId__MessageTypeIsNotRegistered__IdIsNull()
+        {
+            var objectWithMessageId = new MessageWithSomeGuidId()
+            {
+                MessageId = Guid.NewGuid()
+            };
+            var messageCancellationRegistry = new MessageCancellationRegistry();
+            var messageId = messageCancellationRegistry.GetMessageId(objectWithMessageId);
+
+            Assert.Null(messageId);
+        }
+
+    }
+}

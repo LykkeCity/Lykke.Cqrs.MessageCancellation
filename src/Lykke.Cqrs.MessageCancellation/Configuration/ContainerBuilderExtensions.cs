@@ -1,12 +1,10 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
 using Autofac;
 using Lykke.Cqrs.MessageCancellation.Services;
 using Lykke.Cqrs.MessageCancellation.Services.Interfaces;
 using Microsoft.Extensions.Options;
 
-namespace Lykke.Cqrs.MessageCancellation.Modules
+namespace Lykke.Cqrs.MessageCancellation.Configuration
 {
     public static class ContainerBuilderExtensions
     {

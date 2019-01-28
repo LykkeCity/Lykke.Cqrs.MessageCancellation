@@ -1,9 +1,9 @@
-﻿using Lykke.Cqrs.MessageCancellation.Services;
-using Lykke.Cqrs.MessageCancellation.Services.Interfaces;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using Lykke.Cqrs.MessageCancellation.Services;
+using Lykke.Cqrs.MessageCancellation.Services.Interfaces;
 
-namespace Lykke.Cqrs.MessageCancellation.Modules
+namespace Lykke.Cqrs.MessageCancellation.Configuration
 {
     public class RegisterCommandOption
     {

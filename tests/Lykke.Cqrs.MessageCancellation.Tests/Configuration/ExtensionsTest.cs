@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Autofac;
-using Lykke.Cqrs.MessageCancellation.Modules;
+﻿using Autofac;
+using Lykke.Cqrs.MessageCancellation.Configuration;
 using Lykke.Cqrs.MessageCancellation.Services.Interfaces;
 using Lykke.Cqrs.MessageCancellation.Tests.Utils;
-using Microsoft.CodeAnalysis;
-using Microsoft.Extensions.Options;
+using System;
 using Xunit;
 
 namespace Lykke.Cqrs.MessageCancellation.Tests.Modules

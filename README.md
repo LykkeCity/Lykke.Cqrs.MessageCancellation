@@ -10,7 +10,7 @@ Lykke.Cqrs.MessageCancellation is a plugin for Lykke services that use Lykke.Cqr
 # How to use
 
   - Install nuget Lykke.Cqrs.MessageCancellation
-  - Create CustomMessageController.cs in Controllers folder and inherit it from Lykke.Cqrs.MessageCancellation.Controllers.MessageCancellationController. The endpoint is "/api/plugin/message-cancellation"
+  - The endpoint for controller is "/api/plugin/message-cancellation". Ensure that this route is not yet registered in your application.
   - Register Cqrs Message Cancellation
   
 ```sh

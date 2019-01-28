@@ -23,16 +23,16 @@ namespace Lykke.Cqrs.MessageCancellation.Services
             _registeredTypes[type] = getter;
         }
 
-        public string GetMessageId(object objectWithOperationId)
+        public string GetMessageIdOrDefault(object message)
         {
-            var type = objectWithOperationId.GetType();
+            var type = message.GetType();
 
-            if (!_registeredTypes.TryGetValue(type, out var operationIdGetter))
+            if (!_registeredTypes.TryGetValue(type, out var messageIdGetter))
                 return null;
 
-            var operationId = operationIdGetter.GetMessageId(objectWithOperationId);
+            var messageId = messageIdGetter.GetMessageId(message);
 
-            return operationId;
+            return messageId;
         }
     }
 }

@@ -16,7 +16,7 @@ namespace Lykke.Cqrs.MessageCancellation.Interceptors
             object handlerObject,
             Func<Task<CommandHandlingResult>> funcAsync)
         {
-            var messageId = messageCancellationRegistry.GetMessageId(contextMessage);
+            var messageId = messageCancellationRegistry.GetMessageIdOrDefault(contextMessage);
             if (string.IsNullOrEmpty(messageId))
                 return await funcAsync();
 

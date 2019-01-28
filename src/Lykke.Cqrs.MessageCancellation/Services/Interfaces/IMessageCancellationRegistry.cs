@@ -8,6 +8,6 @@ namespace Lykke.Cqrs.MessageCancellation.Services.Interfaces
 
         void RegistryTypeWithMessageId(Type type, IMessageIdGetter getter);
 
-        string GetMessageId(object objectWithOperationId);
+        string GetMessageIdOrDefault(object message);
     }
 }

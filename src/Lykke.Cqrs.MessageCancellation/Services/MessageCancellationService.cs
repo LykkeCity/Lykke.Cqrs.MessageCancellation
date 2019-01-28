@@ -17,13 +17,13 @@ namespace Lykke.Cqrs.MessageCancellation.Services
             _operationsToCancel = new HashSet<string>();
         }
 
-        public Task RequestMessageCancellationAsync(string operationId)
+        public Task RequestMessageCancellationAsync(string messageId)
         {
             _readWriterLockSlim.EnterWriteLock();
 
             try
             {
-                _operationsToCancel.Add(operationId);
+                _operationsToCancel.Add(messageId);
             }
             finally
             {
@@ -31,32 +31,32 @@ namespace Lykke.Cqrs.MessageCancellation.Services
                     _readWriterLockSlim.ExitWriteLock();
             }
 
-            return Task.FromResult(0);
+            return Task.CompletedTask;
         }
 
-        public Task RemoveMessageFromCancellationAsync(string operationId)
+        public Task RemoveMessageFromCancellationAsync(string messageId)
         {
             _readWriterLockSlim.EnterWriteLock();
 
             try
             {
-                _operationsToCancel.Remove(operationId);
+                _operationsToCancel.Remove(messageId);
             }
             finally
             {
                 if (_readWriterLockSlim.IsWriteLockHeld)
                     _readWriterLockSlim.ExitWriteLock();
             }
-            return Task.FromResult(0);
+            return Task.CompletedTask;
         }
 
-        public Task<bool> CheckIfOperationRequiresCancellationAsync(string operationId)
+        public Task<bool> CheckIfOperationRequiresCancellationAsync(string messageId)
         {
             _readWriterLockSlim.EnterReadLock();
 
             try
             {
-                bool operationRequiresCancellation = _operationsToCancel.Contains(operationId);
+                bool operationRequiresCancellation = _operationsToCancel.Contains(messageId);
 
                 return Task.FromResult(operationRequiresCancellation);
             }

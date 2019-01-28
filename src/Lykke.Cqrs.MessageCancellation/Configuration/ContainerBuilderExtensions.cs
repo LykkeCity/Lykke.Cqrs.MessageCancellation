@@ -1,5 +1,6 @@
 ﻿using System;
 using Autofac;
+using Lykke.Cqrs.MessageCancellation.Interceptors;
 using Lykke.Cqrs.MessageCancellation.Services;
 using Lykke.Cqrs.MessageCancellation.Services.Interfaces;
 using Microsoft.Extensions.Options;
@@ -12,6 +13,10 @@ namespace Lykke.Cqrs.MessageCancellation.Configuration
             this ContainerBuilder containerBuilder, 
             Action<IOptions<RegisterCommandOption>> registerCommandsAction)
         {
+            //Interceptors
+            containerBuilder.RegisterType<MessageCancellationCommandInterceptor>();
+            containerBuilder.RegisterType<MessageCancellationEventInterceptor>();
+
             containerBuilder.RegisterType<MessageCancellationRegistry>()
                 .As<IMessageCancellationRegistry>()
                 .IfNotRegistered(typeof(IMessageCancellationRegistry))

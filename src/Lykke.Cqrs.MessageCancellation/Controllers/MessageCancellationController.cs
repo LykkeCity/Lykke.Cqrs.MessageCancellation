@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using JetBrains.Annotations;
 using Lykke.Cqrs.MessageCancellation.Models;
@@ -14,7 +15,9 @@ namespace Lykke.Cqrs.MessageCancellation.Controllers
 
         public MessageCancellationController(IMessageCancellationService messageCancellationService)
         {
-            _messageCancellationService = messageCancellationService;
+            _messageCancellationService = messageCancellationService ?? 
+                                          throw new ArgumentException("Should not be null", 
+                                              nameof(messageCancellationService));
         }
 
         [HttpGet("all")]

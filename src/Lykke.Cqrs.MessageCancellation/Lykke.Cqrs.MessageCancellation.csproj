@@ -21,6 +21,14 @@
         <PackageReference Include="Lykke.Cqrs" Version="8.1.0" />
         <PackageReference Include="Lykke.Logs" Version="7.2.1" />
         <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.1.3" />
+        <PackageReference Include="SourceLink.Create.CommandLine" Version="2.8.0" PrivateAssets="All" />
+    </ItemGroup>
+
+    <ItemGroup Label="dotnet pack instructions">
+        <Content Include="$(OutputPath)$(AssemblyName).pdb">
+            <Pack>true</Pack>
+            <PackagePath>lib/netcoreapp2.1</PackagePath>
+        </Content>
     </ItemGroup>
 
 </Project>

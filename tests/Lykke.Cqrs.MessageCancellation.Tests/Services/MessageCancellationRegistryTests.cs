@@ -17,7 +17,7 @@ namespace Lykke.Cqrs.MessageCancellation.Tests.Services
             var messageCancellationRegistry = new MessageCancellationRegistry();
             //Example of a message registration
             messageCancellationRegistry.RegistryTypeWithMessageId<MessageWithSomeId>((x) => x.MessageId);
-            var messageId = messageCancellationRegistry.GetMessageId(objectWithMessageId);
+            var messageId = messageCancellationRegistry.GetMessageIdOrDefault(objectWithMessageId);
             
             Assert.Equal(objectWithMessageId.MessageId, messageId);
         }
@@ -30,7 +30,7 @@ namespace Lykke.Cqrs.MessageCancellation.Tests.Services
                 MessageId = Guid.NewGuid().ToString()
             };
             var messageCancellationRegistry = new MessageCancellationRegistry();
-            var messageId = messageCancellationRegistry.GetMessageId(objectWithMessageId);
+            var messageId = messageCancellationRegistry.GetMessageIdOrDefault(objectWithMessageId);
 
             Assert.Null(messageId);
         }

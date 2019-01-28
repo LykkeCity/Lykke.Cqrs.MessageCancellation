@@ -25,8 +25,8 @@ namespace Lykke.Cqrs.MessageCancellation.Tests.Modules
             var registry = container.Resolve<IMessageCancellationRegistry>();
             var guid = Guid.NewGuid();
 
-            var result1 = registry.GetMessageId(new MessageWithSomeId() {MessageId = "1"});
-            var result2 = registry.GetMessageId(new MessageWithGuidId() { OperationId = guid });
+            var result1 = registry.GetMessageIdOrDefault(new MessageWithSomeId() {MessageId = "1"});
+            var result2 = registry.GetMessageIdOrDefault(new MessageWithGuidId() { OperationId = guid });
 
             Assert.Equal("1", result1);
             Assert.Equal(guid.ToString(), result2);

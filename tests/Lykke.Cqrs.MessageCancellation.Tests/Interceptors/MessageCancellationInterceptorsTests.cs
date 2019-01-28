@@ -107,18 +107,18 @@ namespace Lykke.Cqrs.MessageCancellation.Tests.Interceptors
             Assert.True(result.Retry);
         }
 
-        private static MessageWithSomeGuidId PrepareServicesForInterception(out Guid operationId,
+        private static MessageWithSomeId PrepareServicesForInterception(out string operationId,
             out MessageCancellationService messageCancellationService,
             out MessageCancellationRegistry messageCancellationRegistry, out Mock<ILogFactory> logFactory)
         {
-            operationId = Guid.NewGuid();
-            var command = new MessageWithSomeGuidId()
+            operationId = Guid.NewGuid().ToString();
+            var command = new MessageWithSomeId()
             {
                 MessageId = operationId
             };
             messageCancellationService = new MessageCancellationService();
             messageCancellationRegistry = new MessageCancellationRegistry();
-            messageCancellationRegistry.RegistryTypeWithMessageId<MessageWithSomeGuidId>(x => x.MessageId);
+            messageCancellationRegistry.RegistryTypeWithMessageId<MessageWithSomeId>(x => x.MessageId.ToString());
             messageCancellationService.RequestMessageCancellationAsync(operationId).Wait();
             logFactory = new Mock<ILogFactory>();
             logFactory.Setup(x => x.CreateLog(It.IsAny<object>())).Returns(new Mock<ILog>().Object);

@@ -1,25 +1,23 @@
-﻿using System;
+﻿using Lykke.Cqrs.MessageCancellation.Services.Interfaces;
 using System.Collections.Generic;
 using System.Collections.Immutable;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Lykke.Cqrs.MessageCancellation.Services.Interfaces;
 
 namespace Lykke.Cqrs.MessageCancellation.Services
 {
     public class MessageCancellationService : IMessageCancellationService
     {
         private ReaderWriterLockSlim _readWriterLockSlim;
-        private HashSet<Guid> _operationsToCancel;
+        private HashSet<string> _operationsToCancel;
 
         public MessageCancellationService()
         {
             _readWriterLockSlim = new ReaderWriterLockSlim();
-            _operationsToCancel = new HashSet<Guid>();
+            _operationsToCancel = new HashSet<string>();
         }
 
-        public Task RequestMessageCancellationAsync(Guid operationId)
+        public Task RequestMessageCancellationAsync(string operationId)
         {
             _readWriterLockSlim.EnterWriteLock();
 
@@ -36,7 +34,7 @@ namespace Lykke.Cqrs.MessageCancellation.Services
             return Task.FromResult(0);
         }
 
-        public Task RemoveMessageFromCancellationAsync(Guid operationId)
+        public Task RemoveMessageFromCancellationAsync(string operationId)
         {
             _readWriterLockSlim.EnterWriteLock();
 
@@ -52,7 +50,7 @@ namespace Lykke.Cqrs.MessageCancellation.Services
             return Task.FromResult(0);
         }
 
-        public Task<bool> CheckIfOperationRequiresCancellationAsync(Guid operationId)
+        public Task<bool> CheckIfOperationRequiresCancellationAsync(string operationId)
         {
             _readWriterLockSlim.EnterReadLock();
 
@@ -69,7 +67,7 @@ namespace Lykke.Cqrs.MessageCancellation.Services
             }
         }
 
-        public Task<IEnumerable<Guid>> GetAllMessagesToCancellAsync()
+        public Task<IEnumerable<string>> GetAllMessagesToCancellAsync()
         {
             _readWriterLockSlim.EnterReadLock();
 
@@ -77,7 +75,7 @@ namespace Lykke.Cqrs.MessageCancellation.Services
             {
                 var enumerator = _operationsToCancel.ToImmutableArray();
 
-                return Task.FromResult((IEnumerable<Guid>)enumerator);
+                return Task.FromResult((IEnumerable<string>)enumerator);
             }
             finally
             {

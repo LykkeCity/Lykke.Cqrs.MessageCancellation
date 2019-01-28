@@ -48,7 +48,7 @@ namespace Lykke.Cqrs.MessageCancellation.Controllers
         }
 
         [HttpDelete]
-        public async Task<ActionResult> DeletMessageFromCancellationAsync(MessageCancellationRequest request)
+        public async Task<ActionResult> DeleteMessageFromCancellationAsync(MessageCancellationRequest request)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);

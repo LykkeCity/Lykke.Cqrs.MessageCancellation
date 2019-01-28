@@ -2,8 +2,8 @@
 
 namespace Lykke.Cqrs.MessageCancellation.Tests.Utils
 {
-    internal class MessageWithSomeGuidId
+    internal class MessageWithSomeId
     {
-        public Guid MessageId { get; set; }
+        public string MessageId { get; set; }
     }
 }

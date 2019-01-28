@@ -6,12 +6,12 @@ namespace Lykke.Cqrs.MessageCancellation.Services.Interfaces
 {
     public interface IMessageCancellationService
     {
-        Task RequestMessageCancellationAsync(Guid messageId);
+        Task RequestMessageCancellationAsync(string messageId);
 
-        Task RemoveMessageFromCancellationAsync(Guid messageId);
+        Task RemoveMessageFromCancellationAsync(string messageId);
 
-        Task<bool> CheckIfOperationRequiresCancellationAsync(Guid messageId);
+        Task<bool> CheckIfOperationRequiresCancellationAsync(string messageId);
 
-        Task<IEnumerable<Guid>> GetAllMessagesToCancellAsync();
+        Task<IEnumerable<string>> GetAllMessagesToCancellAsync();
     }
 }

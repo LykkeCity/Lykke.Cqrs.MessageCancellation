@@ -2,8 +2,8 @@
 
 namespace Lykke.Cqrs.MessageCancellation.Services.Interfaces
 {
-    internal interface IMessageIdGetter
+    public interface IMessageIdGetter
     {
-        Guid GetMessageId(object objectWithMessageId);
+        string GetMessageId(object objectWithMessageId);
     }
 }

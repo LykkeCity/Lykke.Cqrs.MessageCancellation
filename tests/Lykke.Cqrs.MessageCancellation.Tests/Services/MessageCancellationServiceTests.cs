@@ -11,7 +11,7 @@ namespace Lykke.Cqrs.MessageCancellation.Tests.Services
         [Fact]
         public async Task CheckFlow()
         {
-            var operationId = Guid.NewGuid();
+            var operationId = Guid.NewGuid().ToString();
             var messageCancellationService = new MessageCancellationService();
             var firstCheck = await messageCancellationService.CheckIfOperationRequiresCancellationAsync(operationId);
             var firstCheckEnumerable = await messageCancellationService.GetAllMessagesToCancellAsync();

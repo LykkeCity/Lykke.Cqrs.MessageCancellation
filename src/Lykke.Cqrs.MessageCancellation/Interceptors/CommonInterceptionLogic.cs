@@ -12,22 +12,22 @@ namespace Lykke.Cqrs.MessageCancellation.Interceptors
             IMessageCancellationRegistry messageCancellationRegistry,
             IMessageCancellationService messageCancellationService,
             ILog log,
-            object contextCommand,
+            object contextMessage,
             object handlerObject,
             Func<Task<CommandHandlingResult>> funcAsync)
         {
-            var messageId = messageCancellationRegistry.GetMessageId(contextCommand);
-            if (!messageId.HasValue)
+            var messageId = messageCancellationRegistry.GetMessageId(contextMessage);
+            if (string.IsNullOrEmpty(messageId))
                 return await funcAsync();
 
             var requiresCancellation = await
-                messageCancellationService.CheckIfOperationRequiresCancellationAsync(messageId.Value);
+                messageCancellationService.CheckIfOperationRequiresCancellationAsync(messageId);
 
             if (requiresCancellation)
             {
-                log.Info($"MessageId: {messageId.Value} is cancelled, " +
+                log.Info($"MessageId: {messageId} is cancelled, " +
                          $"HandlerType: {handlerObject}, " +
-                         $"MessageType: {contextCommand}", contextCommand);
+                         $"MessageType: {contextMessage}", contextMessage);
 
                 return Cqrs.CommandHandlingResult.Ok();
             }

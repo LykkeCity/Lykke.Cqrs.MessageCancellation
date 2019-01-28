@@ -9,6 +9,6 @@ namespace Lykke.Cqrs.MessageCancellation.Models
     {
         [Required]
         [DataMember(Name = "messageId")]
-        public Guid MessageId { get; set; }
+        public string MessageId { get; set; }
     }
 }

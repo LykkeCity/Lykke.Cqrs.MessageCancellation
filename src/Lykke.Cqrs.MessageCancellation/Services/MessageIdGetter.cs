@@ -5,14 +5,14 @@ namespace Lykke.Cqrs.MessageCancellation.Services
 {
     internal class MessageIdGetter<T> : IMessageIdGetter
     {
-        private readonly Func<T, Guid> _messageIdAccessor;
+        private readonly Func<T, string> _messageIdAccessor;
 
-        public MessageIdGetter(Func<T, Guid> messageIdAccessor)
+        public MessageIdGetter(Func<T, string> messageIdAccessor)
         {
             _messageIdAccessor = messageIdAccessor;
         }
 
-        public Guid GetMessageId(object objectWithOperationId)
+        public string GetMessageId(object objectWithOperationId)
         {
             var obj = (T)objectWithOperationId;
 

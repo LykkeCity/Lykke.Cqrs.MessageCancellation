@@ -38,7 +38,7 @@ namespace Lykke.Cqrs.MessageCancellation.Configuration
 
                 foreach (var dictItem in registered)
                 {
-                    registry.RegistryTypeWithMessageId(dictItem.Key, dictItem.Value);
+                    registry.RegisterTypeWithMessageId(dictItem.Key, dictItem.Value);
                 }
             });
 

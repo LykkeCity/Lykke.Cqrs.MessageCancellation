@@ -4,9 +4,9 @@ namespace Lykke.Cqrs.MessageCancellation.Services.Interfaces
 {
     public interface IMessageCancellationRegistry
     {
-        void RegistryTypeWithMessageId<T>(Func<T, string> operationIdAccessor);
+        void RegisterTypeWithMessageId<T>(Func<T, string> operationIdAccessor);
 
-        void RegistryTypeWithMessageId(Type type, IMessageIdGetter getter);
+        void RegisterTypeWithMessageId(Type type, IMessageIdGetter getter);
 
         string GetMessageIdOrDefault(object message);
     }

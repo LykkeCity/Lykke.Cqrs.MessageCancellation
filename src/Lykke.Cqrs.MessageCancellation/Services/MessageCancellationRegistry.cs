@@ -13,12 +13,12 @@ namespace Lykke.Cqrs.MessageCancellation.Services
             _registeredTypes = new Dictionary<Type, IMessageIdGetter>();
         }
 
-        public void RegistryTypeWithMessageId<T>(Func<T, string> messageIdAccessor)
+        public void RegisterTypeWithMessageId<T>(Func<T, string> messageIdAccessor)
         {
             _registeredTypes[typeof(T)] = new MessageIdGetter<T>(messageIdAccessor);
         }
 
-        public void RegistryTypeWithMessageId(Type type, IMessageIdGetter getter)
+        public void RegisterTypeWithMessageId(Type type, IMessageIdGetter getter)
         {
             _registeredTypes[type] = getter;
         }

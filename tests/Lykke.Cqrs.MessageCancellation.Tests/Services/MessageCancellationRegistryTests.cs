@@ -16,7 +16,7 @@ namespace Lykke.Cqrs.MessageCancellation.Tests.Services
             };
             var messageCancellationRegistry = new MessageCancellationRegistry();
             //Example of a message registration
-            messageCancellationRegistry.RegistryTypeWithMessageId<MessageWithSomeId>((x) => x.MessageId);
+            messageCancellationRegistry.RegisterTypeWithMessageId<MessageWithSomeId>((x) => x.MessageId);
             var messageId = messageCancellationRegistry.GetMessageIdOrDefault(objectWithMessageId);
             
             Assert.Equal(objectWithMessageId.MessageId, messageId);

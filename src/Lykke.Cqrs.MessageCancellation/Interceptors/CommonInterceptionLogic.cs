@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Threading.Tasks;
+using Common;
 using Common.Log;
 using Lykke.Common.Log;
+using Lykke.Cqrs.MessageCancellation.Exceptions;
 using Lykke.Cqrs.MessageCancellation.Services.Interfaces;
 
 namespace Lykke.Cqrs.MessageCancellation.Interceptors
@@ -18,7 +20,9 @@ namespace Lykke.Cqrs.MessageCancellation.Interceptors
         {
             var messageId = messageCancellationRegistry.GetMessageIdOrDefault(contextMessage);
             if (string.IsNullOrEmpty(messageId))
-                return await funcAsync();
+                throw new MessageCancellationInterceptionException($"Message does not contain message id or is not registered. " +
+                                                                   $"Message: {contextMessage.ToJson()}, " +
+                                                                   $"MessageType: {contextMessage.GetType()}");
 
             var requiresCancellation = await
                 messageCancellationService.CheckIfOperationRequiresCancellationAsync(messageId);

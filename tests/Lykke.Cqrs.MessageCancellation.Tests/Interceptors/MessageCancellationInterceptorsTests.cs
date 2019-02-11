@@ -2,6 +2,7 @@ using System;
 using System.Threading.Tasks;
 using Common.Log;
 using Lykke.Common.Log;
+using Lykke.Cqrs.MessageCancellation.Exceptions;
 using Lykke.Cqrs.MessageCancellation.Interceptors;
 using Lykke.Cqrs.MessageCancellation.Services;
 using Lykke.Cqrs.MessageCancellation.Tests.Utils;
@@ -107,12 +108,70 @@ namespace Lykke.Cqrs.MessageCancellation.Tests.Interceptors
             Assert.True(result.Retry);
         }
 
+        [Fact]
+        public async Task EventsInterceptor__EventIsNotRegistered__Throws()
+        {
+            PrepareServicesForInterception(out var _,
+                out var messageCancellationService,
+                out var messageCancellationRegistry,
+                out var logFactory);
+
+            var notRegisteredMessage = new OneMoreMessageWithSomeId()
+            {
+                MessageId = Guid.NewGuid()
+            };
+            var messageCancellationCommandInterceptor =
+                new MessageCancellationEventInterceptor(
+                    messageCancellationService,
+                    messageCancellationRegistry,
+                    logFactory.Object);
+            var interceptionContext = new Mock<IEventInterceptionContext>();
+            interceptionContext.Setup(x => x.Event).Returns(notRegisteredMessage);
+            interceptionContext.Setup(x => x.HandlerObject).Returns(this);
+            interceptionContext.Setup(x => x.InvokeNextAsync())
+                .Returns(Task.FromResult(CommandHandlingResult.Fail(TimeSpan.Zero)));
+
+            await Assert.ThrowsAsync<MessageCancellationInterceptionException>(async () =>
+            {
+                var result = await messageCancellationCommandInterceptor.InterceptAsync(interceptionContext.Object);
+            });
+        }
+
+        [Fact]
+        public async Task CommandsInterceptor__CommandIsNotRegistered__Throws()
+        {
+            PrepareServicesForInterception(out var _,
+                out var messageCancellationService,
+                out var messageCancellationRegistry,
+                out var logFactory);
+
+            var notRegisteredMessage = new OneMoreMessageWithSomeId()
+            {
+                MessageId = Guid.NewGuid()
+            };
+            var messageCancellationCommandInterceptor =
+                new MessageCancellationCommandInterceptor(
+                    messageCancellationService,
+                    messageCancellationRegistry,
+                    logFactory.Object);
+            var interceptionContext = new Mock<ICommandInterceptionContext>();
+            interceptionContext.Setup(x => x.Command).Returns(notRegisteredMessage);
+            interceptionContext.Setup(x => x.HandlerObject).Returns(this);
+            interceptionContext.Setup(x => x.InvokeNextAsync())
+                .Returns(Task.FromResult(CommandHandlingResult.Fail(TimeSpan.Zero)));
+
+            await Assert.ThrowsAsync<MessageCancellationInterceptionException>(async () =>
+            {
+                var result = await messageCancellationCommandInterceptor.InterceptAsync(interceptionContext.Object);
+            });
+        }
+
         private static MessageWithSomeId PrepareServicesForInterception(out string operationId,
             out MessageCancellationService messageCancellationService,
             out MessageCancellationRegistry messageCancellationRegistry, out Mock<ILogFactory> logFactory)
         {
             operationId = Guid.NewGuid().ToString();
-            var command = new MessageWithSomeId()
+            var message = new MessageWithSomeId()
             {
                 MessageId = operationId
             };
@@ -122,7 +181,8 @@ namespace Lykke.Cqrs.MessageCancellation.Tests.Interceptors
             messageCancellationService.RequestMessageCancellationAsync(operationId).Wait();
             logFactory = new Mock<ILogFactory>();
             logFactory.Setup(x => x.CreateLog(It.IsAny<object>())).Returns(new Mock<ILog>().Object);
-            return command;
+
+            return message;
         }
     }
 }
